@@ -260,6 +260,8 @@ def create_or_update_impact(disruption, json_impact, navitia, impact_id=None):
     impact_bd.disruption_id = disruption.id
     if 'send_notifications' in json_impact:
         impact_bd.send_notifications = json_impact['send_notifications']
+    if 'notification_date' in json_impact:
+        impact_bd.notification_date = json_impact['notification_date']
 
     db.session.add(impact_bd)
     #The ptobject is not added in the database before commit. If we have duplicate ptobject

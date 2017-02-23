@@ -450,7 +450,8 @@ impact_fields = {
     'messages': fields.List(fields.Nested(message_fields)),
     'application_period_patterns':
         fields.List(fields.Nested(application_period_pattern_fields), attribute='patterns'),
-    'send_notifications': fields.Raw
+    'send_notifications': fields.Raw,
+    'notification_date': FieldDateTime
 }
 
 one_impact_fields = {

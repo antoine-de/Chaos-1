@@ -171,6 +171,8 @@ def populate_impact(disruption, disruption_pb):
             impact_pb.id = impact.id
             if hasattr(impact, 'send_notifications') and impact.send_notifications == True:
                 impact_pb.send_notifications = impact.send_notifications
+            if hasattr(impact, 'notification_date') and impact.notification_date:
+                impact_pb.notification_date = get_pos_time(impact.notification_date)
             created_upated_at(impact, impact_pb)
             populate_severity(impact_pb, impact.severity)
             populate_application_periods(impact, impact_pb)

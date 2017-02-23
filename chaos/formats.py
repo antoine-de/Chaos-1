@@ -329,7 +329,8 @@ impact_input_format = {
             'items': pattern_input_format,
             'uniqueItems': True
         },
-        'send_notifications': {'type': 'boolean'}
+        'send_notifications': {'type': 'boolean'},
+        'notification_date': {'type': ['string', 'null'], 'pattern': datetime_pattern}
     },
     'required': ['severity']
 }

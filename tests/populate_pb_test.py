@@ -159,6 +159,7 @@ def get_disruption(contributor_code, with_via=True, with_routes=True):
     impact.severity.effect = "no_service"
     impact.status = "published"
     impact.send_notifications = True
+    impact.notification_date = parse_datetime("2014-04-12T16:52:00").replace(tzinfo=None)
 
     # ApplicationPeriods
     application_period = chaos.models.ApplicationPeriods()
@@ -292,7 +293,10 @@ def test_disruption():
     eq_(disruption_pb.impacts[1].HasField('send_notifications'), True)
     eq_(disruption_pb.impacts[1].send_notifications, True)
     eq_(disruption_pb.impacts[2].HasField('send_notifications'), False)
-
+    eq_(disruption_pb.impacts[0].HasField('notification_date'), False)
+    eq_(disruption_pb.impacts[1].HasField('notification_date'), True)
+    eq_(disruption_pb.impacts[1].notification_date, get_pos_time(parse_datetime("2014-04-12T16:52:00").replace(tzinfo=None)))
+    eq_(disruption_pb.impacts[2].HasField('notification_date'), False)
 
 
 def test_disruption_without_via():
@@ -374,6 +378,11 @@ def test_disruption_without_via():
     eq_(disruption_pb.impacts[1].HasField('send_notifications'), True)
     eq_(disruption_pb.impacts[1].send_notifications, True)
     eq_(disruption_pb.impacts[2].HasField('send_notifications'), False)
+    eq_(disruption_pb.impacts[0].HasField('notification_date'), False)
+    eq_(disruption_pb.impacts[1].HasField('notification_date'), True)
+    eq_(disruption_pb.impacts[1].notification_date, get_pos_time(parse_datetime("2014-04-12T16:52:00").replace(tzinfo=None)))
+    eq_(disruption_pb.impacts[2].HasField('notification_date'), False)
+
 
 def test_disruption_without_routes():
     disruption = get_disruption('KISIO-DIGITAL', True, False)
@@ -448,6 +457,11 @@ def test_disruption_without_routes():
     eq_(disruption_pb.impacts[1].HasField('send_notifications'), True)
     eq_(disruption_pb.impacts[1].send_notifications, True)
     eq_(disruption_pb.impacts[2].HasField('send_notifications'), False)
+    eq_(disruption_pb.impacts[0].HasField('notification_date'), False)
+    eq_(disruption_pb.impacts[1].HasField('notification_date'), True)
+    eq_(disruption_pb.impacts[1].notification_date, get_pos_time(parse_datetime("2014-04-12T16:52:00").replace(tzinfo=None)))
+    eq_(disruption_pb.impacts[2].HasField('notification_date'), False)
+
 
 def test_disruption_without_routes():
     disruption = get_disruption('KISIO-DIGITAL', False, False)
@@ -522,6 +536,11 @@ def test_disruption_without_routes():
     eq_(disruption_pb.impacts[1].HasField('send_notifications'), True)
     eq_(disruption_pb.impacts[1].send_notifications, True)
     eq_(disruption_pb.impacts[2].HasField('send_notifications'), False)
+    eq_(disruption_pb.impacts[0].HasField('notification_date'), False)
+    eq_(disruption_pb.impacts[1].HasField('notification_date'), True)
+    eq_(disruption_pb.impacts[1].notification_date, get_pos_time(parse_datetime("2014-04-12T16:52:00").replace(tzinfo=None)))
+    eq_(disruption_pb.impacts[2].HasField('notification_date'), False)
+
 
 def test_disruption_is_deleted():
     disruption = get_disruption('KISIO-DIGITAL')

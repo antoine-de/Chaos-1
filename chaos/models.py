@@ -587,6 +587,7 @@ class Impact(TimestampMixin, db.Model):
     patterns = db.relationship('Pattern', backref='impact', lazy='joined')
     send_notifications = db.Column(db.Boolean, unique=False, nullable=False, default=True)
     version = db.Column(db.Integer, nullable=False, default=1)
+    notification_date = db.Column(db.DateTime(), default=None, nullable=True)
 
     def __repr__(self):
         return '<Impact %r>' % self.id
@@ -608,6 +609,7 @@ class Impact(TimestampMixin, db.Model):
         d['messages'] = self.messages
         d['application_period_patterns'] = self.patterns
         d['send_notifications'] = self.send_notifications
+        d['notification_date'] = self.notification_date
         return d
 
     def __init__(self, objects=None):

@@ -590,3 +590,25 @@ def test_associate_disruption_property_property_id_is_not_uuid():
         'value': 'test'
     }
     validate(json, formats.associate_disruption_property_input_format)
+
+
+def test_impact_with_notification_date():
+    json = {"severity": {"id": "7ffab232-3d48-4eea-aa2c-22f8680230b6"},
+            "notification_date": "2014-06-20T17:00:00Z"}
+    validate(json, formats.impact_input_format)
+
+
+def test_impact_with_notification_date_and_None_value():
+    json = {"severity": {"id": "7ffab232-3d48-4eea-aa2c-22f8680230b6"},
+            "notification_date": None}
+    validate(json, formats.impact_input_format)
+
+
+@raises(ValidationError)
+def test_impact_with_notification_date_without_value():
+    json = {"severity": {"id": "7ffab232-3d48-4eea-aa2c-22f8680230b6"},
+            "notification_date": ""}
+    validate(json, formats.impact_input_format)
+
+
+

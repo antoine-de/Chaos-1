@@ -793,14 +793,10 @@ Feature: Manipulate impacts in a Disruption
         And the field "impact.application_periods" should exist
         And the field "impact.severity.wording" should be "good news"
         And the field "impact.application_periods" should have a size of 4
-        And the field "impact.application_periods.0.begin" should be "2015-09-21T16:00:00Z"
-        And the field "impact.application_periods.0.end" should be "2015-09-22T01:00:00Z"
-        And the field "impact.application_periods.1.begin" should be "2015-09-22T16:00:00Z"
-        And the field "impact.application_periods.1.end" should be "2015-09-23T01:00:00Z"
-        And the field "impact.application_periods.2.begin" should be "2015-09-24T16:00:00Z"
-        And the field "impact.application_periods.2.end" should be "2015-09-25T01:00:00Z"
-        And the field "impact.application_periods.3.begin" should be "2015-09-26T16:00:00Z"
-        And the field "impact.application_periods.3.end" should be "2015-09-27T01:00:00Z"
+        And the field "impact.application_periods" should contain all of "{"begin": "2015-09-21T16:00:00Z", "end": "2015-09-22T01:00:00Z"}"
+        And the field "impact.application_periods" should contain all of "{"begin": "2015-09-22T16:00:00Z", "end": "2015-09-23T01:00:00Z"}"
+        And the field "impact.application_periods" should contain all of "{"begin": "2015-09-24T16:00:00Z", "end": "2015-09-25T01:00:00Z"}"
+        And the field "impact.application_periods" should contain all of "{"begin": "2015-09-26T16:00:00Z", "end": "2015-09-27T01:00:00Z"}"
         And the field "impact.application_period_patterns" should have a size of 1
         And the field "impact.application_period_patterns.0.time_slots" should have a size of 1
         And the field "impact.application_period_patterns.0.start_date" should be "2015-09-21"
