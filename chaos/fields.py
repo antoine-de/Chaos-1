@@ -27,7 +27,7 @@
 # https://groups.google.com/d/forum/navitia
 # www.navitia.io
 
-from flask_restful import fields, url_for
+from flask_restful import fields, url_for, marshal
 from flask import current_app, request, g
 from utils import make_fake_pager, get_coverage, get_token, get_current_time
 from chaos.navitia import Navitia
@@ -57,15 +57,22 @@ class FieldDate(fields.Raw):
         else:
             return None
 
+class CustomImpacts(fields.Raw):
+    def output(self, key, val):
+        return marshal(val, {
+                'pagination': FieldPaginateImpacts(attribute='impacts'),
+                'impacts': PaginateObjects(fields.Nested(impact_fields, display_null=False,
+                                                         attribute='impacts'))
+            })
 
 class FieldPaginateImpacts(fields.Raw):
     '''
     Pagination of impacts list for one disruption
     '''
-    def output(self, key, impacts):
-
+    def output(self, key, disruption):
+        impacts = disruption.impacts
         disruption_id = next((i.disruption_id for i in impacts), None)
-        pagination = make_fake_pager(impacts.count(), 20, 'impact', disruption_id=disruption_id)
+        pagination = make_fake_pager(len(impacts), 20, 'impact', disruption_id=disruption_id)
 
         return pagination.get('pagination')
 
@@ -80,7 +87,9 @@ class PaginateObjects(fields.Raw):
     def _filter(cls, impacts):
         return impacts[:10] # todo use the pagination to filter
 
-    def output(self, key, impacts):
+    def output(self, key, disruption):
+        impacts = disruption.impacts
+
         if not g.display_impacts:
             return None
 
@@ -522,11 +531,6 @@ traffic_reports_marshaler = {
     'disruptions': fields.List(fields.Nested(traffic_report_impact_field, display_null=False))
 }
 
-impacts = {
-    'pagination': FieldPaginateImpacts(),
-    'impacts': PaginateObjects(fields.Nested(impact_fields, display_null=False))
-}
-
 disruption_fields = {
     'id': fields.Raw,
     'self': {'href': fields.Url('disruption', absolute=True)},
@@ -542,7 +546,7 @@ disruption_fields = {
     },
     'publication_status': fields.Raw,
     'contributor': FieldContributor,
-    'impacts': fields.Nested(impacts),
+    'impacts': CustomImpacts(),
     'localization': FieldLocalization(attribute='localizations'),
     'cause': fields.Nested(cause_fields, allow_null=True),
     'tags': fields.List(fields.Nested(tag_fields)),

@@ -230,6 +230,9 @@ class Disruptions(flask_restful.Resource):
         g.display_impacts = depth > 1
 
         response = {'disruptions': result.items, 'meta': make_pager(result, 'disruption')}
+
+        for o in result.items:
+            models.db.session.expunge(o)
         return marshal(response, disruptions_fields)
 
     def _validate_arguments_for_disruption_list(self, args):

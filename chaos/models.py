@@ -436,7 +436,7 @@ class Disruption(TimestampMixin, db.Model):
     )
     start_publication_date = db.Column(db.DateTime(), nullable=True)
     end_publication_date = db.Column(db.DateTime(), nullable=True)
-    impacts = db.relationship('Impact', backref='disruption', lazy='dynamic', cascade='delete')
+    impacts = db.relationship('Impact', backref='disruption', lazy='joined', cascade='delete')
     cause_id = db.Column(UUID, db.ForeignKey(Cause.id))
     cause = db.relationship('Cause', backref='disruption', lazy='joined')
     tags = db.relationship("Tag", secondary=associate_disruption_tag, backref="disruptions")
@@ -445,7 +445,8 @@ class Disruption(TimestampMixin, db.Model):
     contributor_id = db.Column(UUID, db.ForeignKey(Contributor.id), nullable=False)
     contributor = db.relationship('Contributor', backref='disruptions', lazy='joined')
     version = db.Column(db.Integer, nullable=False, default=1)
-    localizations = db.relationship("PTobject", secondary=associate_disruption_pt_object, backref="disruptions")
+    localizations = db.relationship("PTobject", secondary=associate_disruption_pt_object,
+                                    backref="disruptions", lazy='joined')
     properties = db.relationship(
         'AssociateDisruptionProperty',
         lazy='joined',
