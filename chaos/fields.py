@@ -90,7 +90,7 @@ class PaginateObjects(fields.Raw):
     def output(self, key, disruption):
         impacts = disruption.impacts
 
-        if not g.display_impacts:
+        if hasattr(g, 'display_impacts') and not g.display_impacts:
             return None
 
         if impacts is None:

@@ -439,7 +439,7 @@ class Disruption(TimestampMixin, db.Model):
     impacts = db.relationship('Impact', backref='disruption', lazy='joined', cascade='delete')
     cause_id = db.Column(UUID, db.ForeignKey(Cause.id))
     cause = db.relationship('Cause', backref='disruption', lazy='joined')
-    tags = db.relationship("Tag", secondary=associate_disruption_tag, backref="disruptions")
+    tags = db.relationship("Tag", secondary=associate_disruption_tag, backref="disruptions", lazy='joined')
     client_id = db.Column(UUID, db.ForeignKey(Client.id), nullable=False)
     client = db.relationship('Client', backref='disruptions', lazy='joined')
     contributor_id = db.Column(UUID, db.ForeignKey(Contributor.id), nullable=False)
